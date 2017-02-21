@@ -1,0 +1,14 @@
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\bin\Debug\GraphicClient.exe.config
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\bin\Debug\GraphicClient.exe
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\bin\Debug\GraphicClient.pdb
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\obj\Debug\GraphicClient.csprojResolveAssemblyReference.cache
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\obj\Debug\GraphicClient.LoginForm.resources
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\obj\Debug\GraphicClient.Properties.Resources.resources
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\obj\Debug\GraphicClient.csproj.GenerateResource.Cache
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\obj\Debug\GraphicClient.exe
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\obj\Debug\GraphicClient.pdb
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\bin\Debug\NetworkCommsDotNet.dll
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\bin\Debug\NetworkCommsDotNet.pdb
+C:\Users\Infamous\Desktop\Projects\Server\GraphicClient\bin\Debug\NetworkCommsDotNet.xml

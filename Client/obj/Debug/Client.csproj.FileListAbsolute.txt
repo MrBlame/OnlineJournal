@@ -1,0 +1,14 @@
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\Client.exe.config
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\Client.exe
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\Client.pdb
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\NetworkCommsDotNet.dll
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\NetworkCommsDotNet.pdb
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\NetworkCommsDotNet.xml
+C:\Users\Infamous\Desktop\Projects\Server\Client\obj\Debug\Client.exe
+C:\Users\Infamous\Desktop\Projects\Server\Client\obj\Debug\Client.pdb
+C:\Users\Infamous\Desktop\Projects\Server\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\protobuf-net.dll
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\protobuf-net.pdb
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\protobuf-net.xml
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Infamous\Desktop\Projects\Server\Client\bin\Debug\Newtonsoft.Json.xml
