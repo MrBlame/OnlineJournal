@@ -1,0 +1,26 @@
+Base Exception Type: MySql.Data.MySqlClient.MySqlException (0x80004005): Unknown column 'Admin' in 'where clause'
+   at MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   at MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.GetResult(Int32 statementId, Int32& affectedRows, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at Server.MySqlDao.RunQuery(String query) in C:\Users\Infamous\Desktop\Projects\Server\Server\MySQLDao.cs:line 30
+   at Server.MessageListener.createSendObject(String message) in C:\Users\Infamous\Desktop\Projects\Server\Server\MessageListener.cs:line 95
+   at Server.MessageListener.ReadIncommingCommand(PacketHeader header, Connection connection, String message) in C:\Users\Infamous\Desktop\Projects\Server\Server\MessageListener.cs:line 86
+   at NetworkCommsDotNet.Tools.PacketTypeHandlerDelegateWrapper`1.Process(PacketHeader packetHeader, Connection connection, Object obj) in C:\Users\Infamous\Desktop\Projects\NetworkComms.Net\NetworkCommsDotNet\Tools\PacketUnwrappers.cs:line 97
+   at NetworkCommsDotNet.NetworkComms.TriggerGlobalPacketHandlers(PacketHeader packetHeader, Connection connection, Object returnObject, Boolean ignoreUnknownPacketTypeOverride) in C:\Users\Infamous\Desktop\Projects\NetworkComms.Net\NetworkCommsDotNet\NetworkComms.cs:line 758
+
+Stack Trace:    at MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   at MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.GetResult(Int32 statementId, Int32& affectedRows, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at Server.MySqlDao.RunQuery(String query) in C:\Users\Infamous\Desktop\Projects\Server\Server\MySQLDao.cs:line 30
+   at Server.MessageListener.createSendObject(String message) in C:\Users\Infamous\Desktop\Projects\Server\Server\MessageListener.cs:line 95
+   at Server.MessageListener.ReadIncommingCommand(PacketHeader header, Connection connection, String message) in C:\Users\Infamous\Desktop\Projects\Server\Server\MessageListener.cs:line 86
+   at NetworkCommsDotNet.Tools.PacketTypeHandlerDelegateWrapper`1.Process(PacketHeader packetHeader, Connection connection, Object obj) in C:\Users\Infamous\Desktop\Projects\NetworkComms.Net\NetworkCommsDotNet\Tools\PacketUnwrappers.cs:line 97
+   at NetworkCommsDotNet.NetworkComms.TriggerGlobalPacketHandlers(PacketHeader packetHeader, Connection connection, Object returnObject, Boolean ignoreUnknownPacketTypeOverride) in C:\Users\Infamous\Desktop\Projects\NetworkComms.Net\NetworkCommsDotNet\NetworkComms.cs:line 758

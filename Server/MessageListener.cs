@@ -20,7 +20,7 @@ namespace Server
 
         private DataTable tableToSend;
         static string toSendObject;
-        private string sqlQuery;
+        private string sqlQuerry;
         private MySqlDao mySqlDao;
 
         public void StartServer()
@@ -83,18 +83,27 @@ namespace Server
         private void ReadIncommingCommand(PacketHeader header, Connection connection, string message)
         {
             Console.WriteLine("\nA message was received from " + connection.ToString() + " which said '" + message + "'.");
-            createSendObject(message);
+            CreateSendObject(message);
             connection.SendObject("Message", toSendObject); 
         }
 
-        private void createSendObject(string message)
+        //Firstly push all to git, global patch incomming
+        //remove CreateQuerry just to RunQuerry;
+        //RunQuerry now must return List<DataTable>
+        // So replace 3 methods to 2. In MySqlDao create new global variable tablesToSend type of List<DataTable>
+
+        private void CreateSendObject(string message)                  
         {
-            sqlQuery = message;
-            tableToSend = mySqlDao.RunQuery(message);
-            toSendObject = convertToJSONString(tableToSend);
+            string[] request = message.Split(';');
+            Console.WriteLine(request[0] + " " + request[1] + " " + request[2]);
+            mySqlDao.CreateQuerry(request);
+            sqlQuerry = mySqlDao.GetQuerry();               
+            tableToSend = mySqlDao.RunQuery(sqlQuerry);     
+
+            toSendObject = ConvertToJSONString(tableToSend);
         }
 
-        private string convertToJSONString(DataTable table)
+        private string ConvertToJSONString(DataTable table)         //replace to convert List<DataTable> to JSONString
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
