@@ -17,32 +17,48 @@ namespace Client
 {
     class JSONConvertor
     {
-        private DataTable table;
+        private List<DataTable> tables;
+
+        public JSONConvertor()
+        {
+            tables = new List<DataTable>();
+        }
 
         public void ConvertStringToDataTable(string jsonMessage)
         {
-            table = JsonConvert.DeserializeObject<DataTable>(jsonMessage);
+            string[] arrayOfTables = jsonMessage.Split('/');
 
-            ShowTable();
+            for (int i = 0; i < arrayOfTables.Count(); i++)
+            {
+                tables.Add(JsonConvert.DeserializeObject<DataTable>(arrayOfTables[i]));
+            }
+            ShowTable();            // Only for console testing
+        }
 
+        public string ConvertJSONStringToString(string jsonMessage)
+        {
+            return JsonConvert.ToString(jsonMessage);
         }
 
         private void ShowTable()
         {
-            for (int j = 0; j < table.Rows.Count; j++)
+            for (int i = 0; i < tables.Count; i++)
             {
-                DataRow row = table.Rows[j];
-
-                for (int n = 0; n < table.Columns.Count; n++)
+                for (int j = 0; j < tables[i].Rows.Count; j++)
                 {
-                    DataColumn column = table.Columns[n];
+                    DataRow row = tables[i].Rows[j];
 
-                    Console.Write(row[column]+", ");
+                    for (int n = 0; n < tables[i].Columns.Count; n++)
+                    {
+                        DataColumn column = tables[i].Columns[n];
+
+                        Console.Write(row[column] + ", ");
+                    }
+                    Console.WriteLine();
                 }
-
-                Console.WriteLine();
             }
         }
+
     }
 }
 

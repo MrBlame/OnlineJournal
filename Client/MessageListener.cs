@@ -25,7 +25,7 @@ namespace Client
 
         public void StartListen()
         {
-            String message = "";
+            string message = "";
 
             while (true)
             {
@@ -44,7 +44,18 @@ namespace Client
             Console.WriteLine("\nA message was received from " + connection.ToString() + " which said '" + message + "'.");
 
             Console.WriteLine("After convert");
-            convertor.ConvertStringToDataTable(message);
+            try
+            {
+                convertor.ConvertStringToDataTable(message);
+            }
+            catch (IndexOutOfRangeException)
+            {
+               Console.WriteLine("next error was occured: "+ convertor.ConvertJSONStringToString(message));
+            }
+            catch (Newtonsoft.Json.JsonReaderException)
+            {
+                Console.WriteLine("next error was occured: " + convertor.ConvertJSONStringToString(message));
+            }
 
         }
 
