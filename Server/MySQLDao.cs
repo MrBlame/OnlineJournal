@@ -9,18 +9,18 @@ using System.Globalization;
 
 namespace Server
 {
-    class MySqlDao
+   public class MySqlDao
     {
         private MySqlConnection connection;
         private List<DataTable> tablesToSend;
-        private string error;
+        private CommandList command;
 
         public MySqlDao(MySqlConnection connection)
         {
             this.connection = connection;
             tablesToSend = new List<DataTable>();
         }
-      
+
         public void CreateQuerry(string[] request)
         {
             tablesToSend.Clear();
@@ -31,12 +31,53 @@ namespace Server
         {
             switch (request[0])
             {
-                case "ShowForMonth": { Console.WriteLine("Show for month!"); ShowForMonth(request); break; }
-                case "ShowForWeek": { ShowForWeek(request); break; }
-                case "ShowForGroup": { ShowForGroup(request); break; }
-                case "ShowForSubject": { ShowForSubject(request); break; }
-                case "Login": { Console.WriteLine("Login check!"); Login(request); break; }
-                default: { WrongCommand(); break; }
+                case "ShowScheduleForMonth":
+                    {
+                        command = CommandList.SHOW_SCHEDULE_FOR_MONTH;
+                        ShowForMonth(request);
+                        break;
+                    }
+                case "ShowScheduleForWeek":
+                    {
+                        command = CommandList.SHOW_SCHEDULE_FOR_WEEK;
+                        ShowForWeek(request);
+                        break;
+                    }
+                case "ShowGroupDetail":
+                    {
+                        command = CommandList.SHOW_GROUP_DETAIL;
+                        ShowForGroup(request);
+                        break;
+                    }
+                case "ShowSubjectDetail":
+                    {
+                        command = CommandList.SHOW_SUBJECT_DETAIL;
+                        ShowForSubject(request);
+                        break;
+                    }
+                case "Login":
+                    {
+                        command = CommandList.LOGIN;
+                        Login(request);
+                        break;
+                    }
+                case "InsertStudentPresence":
+                    {
+                        command = CommandList.INSERT_PRESENCE;
+                        InsertStudentsPresence(request);
+                        break;
+                    }
+                case "InsertStudentMark":
+                    {
+                        command = CommandList.INSERT_MARK;
+                        InsertStudentsMark(request);
+                        break;
+                    }
+                default:
+                    {
+                        command = CommandList.WRONG_COMMAND;
+                        break;
+                    }
             }
         }
 
@@ -46,11 +87,6 @@ namespace Server
                  " WHERE LOGIN = '" + request[1] + "'" +
                  " AND PASSWORD = '" + request[2] + "';";
             tablesToSend.Add(RunQuery(query));
-        }
-
-        private void WrongCommand()
-        {
-            error = "Wrong command syntax!";
         }
 
         private void ShowForWeek(string[] request)
@@ -86,10 +122,10 @@ namespace Server
 
         private void ShowForSubject(string[] request)
         {
-            //Standart for request: "ShowForSubject;Teacher_Id;Subject_Id;#InDay;Date;Groups"
-            //Exemple: ShowForSubject;1;2017-03-16 13:20:00;КМ-135;СП-136
+            //Standart for request: "ShowForSubject;Teacher_Id;Subject_Id;Date;Groups"
+            //Exemple: ShowForSubject;1;5; 2017-03-16 13:20:00;КМ-135;СП-136
             // Select subject info + all groups on this lesson
-            string[] groupNames = SelectGroupNamesFromIncommingRequest(request[4]);
+            string[] groupNames = SelectObjectsListFromRequest(request[4]);
             string teacherId = request[1];
             string subjectId = request[2];
             string date = request[3];
@@ -106,20 +142,10 @@ namespace Server
                 " FROM subjects a, teachers b, schedule c" +
                 " WHERE c.TEACHER_ID = " + teacherId +
                 " AND c.SUBJECT_ID = " + subjectId +
-                " AND c.DATE = " + date +
+                " AND c.DATE = '" + date +"'"+
                 " AND c.TEACHER_ID = b.ID" +
                 " AND c.SUBJECT_ID = a.ID";
             tablesToSend.Add(RunQuery(query));
-        }
-
-        private string[] SelectGroupNamesFromIncommingRequest(string groupNames)
-        {
-            string[] result = groupNames.Split(',');
-            for (int i = 0; i < result.Count(); i++)
-            {
-                result[i] = result[i].Trim();
-            }
-            return result;
         }
 
         private void GenerateQueryForGroupSelecting(string[] groupNames, string subjectId, string date)
@@ -161,10 +187,58 @@ namespace Server
         private void ShowForGroup(string[] request)
         {
             string query = "SELECT a.ID_IN_GROUP,a.SURNAME,a.NAME," +
-                "b.PRESENCE FROM students a, studentvisiting b" +
+                "b.PRESENCE FROM students a, studentacademicperformance b" +
                 " WHERE GROUP_ID = " + request[1] +
                 " AND a.ID = b.STUDENT_ID ORDER BY ID_IN_GROUP ASC;";
             tablesToSend.Add(RunQuery(query));
+        }
+
+        private void InsertStudentsPresence(string[] request)
+        {
+            // Standart template: "InserrtStudentPresence;Subject_Id;Date;List<StudentId>;List<Value>"
+            string[] studentList = SelectObjectsListFromRequest(request[3]);
+            string[] valueList = SelectObjectsListFromRequest(request[4]);
+            for (int i = 0; i < studentList.Count(); i++)
+            {
+                string query = "UPDATE studentacademicperformance" +
+                    " SET PRESENCE = " + valueList[i] +
+                    " WHERE STUDENT_ID = " + studentList[i] +
+                    " AND SUBJECT_ID = " + request[1] +
+                    " AND DATE = '" + request[2] + "';";
+                Console.WriteLine("Message for student id[" + studentList[i] + "] was send");
+                RunQuery(query);
+            }
+        }
+
+        private void InsertStudentsMark(string[] request)
+        {
+            // Standart template: "InsertStudentMark;Subject_Id;Date;List<StudentId>;List<Value>; List<Mar_Types>; List<Description>"
+            string[] studentList = SelectObjectsListFromRequest(request[3]);
+            string[] valueList = SelectObjectsListFromRequest(request[4]);
+            string[] markTypesList = SelectObjectsListFromRequest(request[5]);
+            string[] descriptionList = SelectObjectsListFromRequest(request[6]);
+            for (int i = 0; i < studentList.Count(); i++)
+            {
+                string query = "UPDATE studentacademicperformance" +
+                    " SET MARK = " + valueList[i] + "," +
+                    "MARK_TYPE = " + markTypesList[i] + "," +
+                    "MARK_DESCRIPTION = '" + descriptionList[i] + "'" +
+                    " WHERE STUDENT_ID = " + studentList[i] +
+                    " AND SUBJECT_ID = " + request[1] +
+                    " AND DATE = '" + request[2] + "';";
+                Console.WriteLine("Message for student id[" + studentList[i] + "] was send");
+                RunQuery(query);
+            }
+        }
+
+        private string[] SelectObjectsListFromRequest(string request)
+        {
+            string[] result = request.Split(',');
+            for (int i = 0; i < result.Count(); i++)
+            {
+                result[i] = result[i].Trim();
+            }
+            return result;
         }
 
         private DataTable RunQuery(string query)
@@ -181,7 +255,7 @@ namespace Server
             dataAdapter.Fill(table);
             if (table.Rows.Count == 0)
             {
-                error = "No information was found!";
+                command = CommandList.EMPTY_RESULT;
             }
             return table;
         }
@@ -191,14 +265,15 @@ namespace Server
             return tablesToSend;
         }
 
-        public string GetError()
+        public CommandList GetCommand()
         {
-            return error;
+            return command;
         }
 
         public void CloseConnection()
         {
             connection.Close();
         }
+
     }
 }

@@ -65,9 +65,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandRecognizer.cs" />
+    <Compile Include="CommandList.cs" />
     <Compile Include="JSONSerializer.cs" />
     <Compile Include="MessageListener.cs" />
-    <Compile Include="MySQLDao.cs" />
+    <Compile Include="MySqlDao.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

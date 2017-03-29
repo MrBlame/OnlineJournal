@@ -17,7 +17,6 @@ namespace Server
 {
     class MessageListener
     {
-
         private List<DataTable> tablesToSend;
         static string toSendObject;
         private MySqlDao mySqlDao;
@@ -92,16 +91,34 @@ namespace Server
             string[] request = message.Split(';');
             mySqlDao.CreateQuerry(request);
             tablesToSend.AddRange(mySqlDao.GetData());
-            if (tablesToSend.Count == 0)
+            switch (mySqlDao.GetCommand())
             {
-                toSendObject = mySqlDao.GetError();
-                Console.WriteLine("Error was found");
+                case CommandList.EMPTY_RESULT:
+                    {
+                        toSendObject = "Empty result!";
+                        break;
+                    }
+                case CommandList.WRONG_COMMAND:
+                    {
+                        toSendObject = "Wrong command";
+                        break;
+                    }
+                case CommandList.INSERT_PRESENCE:
+                    {
+                        toSendObject = "Presence was updated";
+                        break;
+                    }
+                case CommandList.INSERT_MARK:
+                    {
+                        toSendObject = "Mark was updated";
+                        break;
+                    }
+                default:
+                    {
+                        toSendObject = ConvertToJSONStringTablesForSending(tablesToSend);
+                        break;
+                    }
             }
-            else
-            {
-                toSendObject = ConvertToJSONStringTablesForSending(tablesToSend);
-                Console.WriteLine("Object was send");
-            }     
         }
 
         private string ConvertToJSONStringTablesForSending(List<DataTable> tables)
