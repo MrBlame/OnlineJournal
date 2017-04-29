@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="universitydbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="groups">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAME" Type="text" Nullable="false" />
+    <Property Name="FOUNDING_DATE" Type="date" />
+    <Property Name="DEPARTMENT" Type="text" Nullable="false" />
+    <Property Name="GROUP_TYPE" Type="text" Nullable="false" />
+  </EntityType>
+  <EntityType Name="marktypes">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAME" Type="text" Nullable="false" />
+  </EntityType>
+  <EntityType Name="schedule">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SUBJECT_ID" Type="int" Nullable="false" />
+    <Property Name="TEACHER_ID" Type="int" Nullable="false" />
+    <Property Name="GROUPS" Type="text" Nullable="false" />
+    <Property Name="CLASSROOM" Type="text" Nullable="false" />
+    <Property Name="DATE" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="SUBJECT_TYPE" Type="text" Nullable="false" />
+    <Property Name="THEME_OF_LESSON" Type="text" />
+    <Property Name="CONDUCTED" Type="int" />
+    <Property Name="FILES_FOR_LESSON" Type="text" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'def.universitydb.studentacademicperformance' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="studentacademicperformance">
+    <Key>
+      <PropertyRef Name="STUDENT_ID" />
+      <PropertyRef Name="SUBJECT_ID" />
+      <PropertyRef Name="DATE" />
+    </Key>
+    <Property Name="STUDENT_ID" Type="int" Nullable="false" />
+    <Property Name="SUBJECT_ID" Type="int" Nullable="false" />
+    <Property Name="DATE" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="PRESENCE" Type="int" />
+    <Property Name="MARK" Type="uint" />
+    <Property Name="MARK_TYPE" Type="int" />
+    <Property Name="MARK_DESCRIPTION" Type="text" />
+    <Property Name="FILE_OF_LABWORK" Type="text" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'def.universitydb.students' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="students">
+    <Key>
+      <PropertyRef Name="USER_ID" />
+      <PropertyRef Name="NAME" />
+      <PropertyRef Name="SURNAME" />
+      <PropertyRef Name="GROUP_ID" />
+      <PropertyRef Name="ID_IN_GROUP" />
+    </Key>
+    <Property Name="USER_ID" Type="int" Nullable="false" />
+    <Property Name="NAME" Type="text" Nullable="false" />
+    <Property Name="SURNAME" Type="text" Nullable="false" />
+    <Property Name="GROUP_ID" Type="int" Nullable="false" />
+    <Property Name="ID_IN_GROUP" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="subjects">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAME" Type="text" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'def.universitydb.teachers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="teachers">
+    <Key>
+      <PropertyRef Name="USER_ID" />
+      <PropertyRef Name="NAME" />
+      <PropertyRef Name="SURNAME" />
+      <PropertyRef Name="POSITION" />
+    </Key>
+    <Property Name="USER_ID" Type="int" Nullable="false" />
+    <Property Name="NAME" Type="text" Nullable="false" />
+    <Property Name="SURNAME" Type="text" Nullable="false" />
+    <Property Name="POSITION" Type="text" Nullable="false" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAME" Type="text" Nullable="false" />
+    <Property Name="PASSWORD" Type="text" Nullable="false" />
+    <Property Name="USER_TYPE" Type="text" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__subjects">
+    <End Role="subjects" Type="Self.subjects" Multiplicity="1" />
+    <End Role="studentacademicperformance" Type="Self.studentacademicperformance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="subjects">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="studentacademicperformance">
+        <PropertyRef Name="SUBJECT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_schedule_subjects">
+    <End Role="subjects" Type="Self.subjects" Multiplicity="1" />
+    <End Role="schedule" Type="Self.schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="subjects">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="schedule">
+        <PropertyRef Name="SUBJECT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_students_groups">
+    <End Role="groups" Type="Self.groups" Multiplicity="1" />
+    <End Role="students" Type="Self.students" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="groups">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="students">
+        <PropertyRef Name="GROUP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_students_users">
+    <End Role="users" Type="Self.users" Multiplicity="1" />
+    <End Role="students" Type="Self.students" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="students">
+        <PropertyRef Name="USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_studentvacademicperformance_marktypes">
+    <End Role="marktypes" Type="Self.marktypes" Multiplicity="0..1" />
+    <End Role="studentacademicperformance" Type="Self.studentacademicperformance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="marktypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="studentacademicperformance">
+        <PropertyRef Name="MARK_TYPE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_teachers_users">
+    <End Role="users" Type="Self.users" Multiplicity="1" />
+    <End Role="teachers" Type="Self.teachers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="teachers">
+        <PropertyRef Name="USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="universitydbModelStoreContainer">
+    <EntitySet Name="groups" EntityType="Self.groups" Schema="universitydb" store:Type="Tables" />
+    <EntitySet Name="marktypes" EntityType="Self.marktypes" Schema="universitydb" store:Type="Tables" />
+    <EntitySet Name="schedule" EntityType="Self.schedule" Schema="universitydb" store:Type="Tables" />
+    <EntitySet Name="subjects" EntityType="Self.subjects" Schema="universitydb" store:Type="Tables" />
+    <EntitySet Name="users" EntityType="Self.users" Schema="universitydb" store:Type="Tables" />
+    <EntitySet Name="studentacademicperformance" EntityType="Self.studentacademicperformance" store:Type="Tables" store:Schema="universitydb">
+      <DefiningQuery>SELECT
+`studentacademicperformance`.`STUDENT_ID`, 
+`studentacademicperformance`.`SUBJECT_ID`, 
+`studentacademicperformance`.`DATE`, 
+`studentacademicperformance`.`PRESENCE`, 
+`studentacademicperformance`.`MARK`, 
+`studentacademicperformance`.`MARK_TYPE`, 
+`studentacademicperformance`.`MARK_DESCRIPTION`, 
+`studentacademicperformance`.`FILE_OF_LABWORK`
+FROM `studentacademicperformance` AS `studentacademicperformance`</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="students" EntityType="Self.students" store:Type="Tables" store:Schema="universitydb">
+      <DefiningQuery>SELECT
+`students`.`USER_ID`, 
+`students`.`NAME`, 
+`students`.`SURNAME`, 
+`students`.`GROUP_ID`, 
+`students`.`ID_IN_GROUP`
+FROM `students` AS `students`</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="teachers" EntityType="Self.teachers" store:Type="Tables" store:Schema="universitydb">
+      <DefiningQuery>SELECT
+`teachers`.`USER_ID`, 
+`teachers`.`NAME`, 
+`teachers`.`SURNAME`, 
+`teachers`.`POSITION`
+FROM `teachers` AS `teachers`</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__subjects" Association="Self.FK__subjects">
+      <End Role="subjects" EntitySet="subjects" />
+      <End Role="studentacademicperformance" EntitySet="studentacademicperformance" />
+    </AssociationSet>
+    <AssociationSet Name="FK_schedule_subjects" Association="Self.FK_schedule_subjects">
+      <End Role="subjects" EntitySet="subjects" />
+      <End Role="schedule" EntitySet="schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_students_groups" Association="Self.FK_students_groups">
+      <End Role="groups" EntitySet="groups" />
+      <End Role="students" EntitySet="students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_students_users" Association="Self.FK_students_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="students" EntitySet="students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_studentvacademicperformance_marktypes" Association="Self.FK_studentvacademicperformance_marktypes">
+      <End Role="marktypes" EntitySet="marktypes" />
+      <End Role="studentacademicperformance" EntitySet="studentacademicperformance" />
+    </AssociationSet>
+    <AssociationSet Name="FK_teachers_users" Association="Self.FK_teachers_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="teachers" EntitySet="teachers" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

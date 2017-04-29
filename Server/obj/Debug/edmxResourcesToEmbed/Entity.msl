@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="universitydbModelStoreContainer" CdmEntityContainer="universitydbEntities">
+    <EntitySetMapping Name="groups">
+      <EntityTypeMapping TypeName="universitydbModel.group">
+        <MappingFragment StoreEntitySet="groups">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="FOUNDING_DATE" ColumnName="FOUNDING_DATE" />
+          <ScalarProperty Name="DEPARTMENT" ColumnName="DEPARTMENT" />
+          <ScalarProperty Name="GROUP_TYPE" ColumnName="GROUP_TYPE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="marktypes">
+      <EntityTypeMapping TypeName="universitydbModel.marktype">
+        <MappingFragment StoreEntitySet="marktypes">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="schedules">
+      <EntityTypeMapping TypeName="universitydbModel.schedule">
+        <MappingFragment StoreEntitySet="schedule">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="SUBJECT_ID" ColumnName="SUBJECT_ID" />
+          <ScalarProperty Name="TEACHER_ID" ColumnName="TEACHER_ID" />
+          <ScalarProperty Name="GROUPS" ColumnName="GROUPS" />
+          <ScalarProperty Name="CLASSROOM" ColumnName="CLASSROOM" />
+          <ScalarProperty Name="DATE" ColumnName="DATE" />
+          <ScalarProperty Name="SUBJECT_TYPE" ColumnName="SUBJECT_TYPE" />
+          <ScalarProperty Name="THEME_OF_LESSON" ColumnName="THEME_OF_LESSON" />
+          <ScalarProperty Name="CONDUCTED" ColumnName="CONDUCTED" />
+          <ScalarProperty Name="FILES_FOR_LESSON" ColumnName="FILES_FOR_LESSON" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="subjects">
+      <EntityTypeMapping TypeName="universitydbModel.subject">
+        <MappingFragment StoreEntitySet="subjects">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="universitydbModel.user">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+          <ScalarProperty Name="USER_TYPE" ColumnName="USER_TYPE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="studentacademicperformances">
+      <EntityTypeMapping TypeName="universitydbModel.studentacademicperformance">
+        <MappingFragment StoreEntitySet="studentacademicperformance">
+          <ScalarProperty Name="STUDENT_ID" ColumnName="STUDENT_ID" />
+          <ScalarProperty Name="SUBJECT_ID" ColumnName="SUBJECT_ID" />
+          <ScalarProperty Name="DATE" ColumnName="DATE" />
+          <ScalarProperty Name="PRESENCE" ColumnName="PRESENCE" />
+          <ScalarProperty Name="MARK" ColumnName="MARK" />
+          <ScalarProperty Name="MARK_TYPE" ColumnName="MARK_TYPE" />
+          <ScalarProperty Name="MARK_DESCRIPTION" ColumnName="MARK_DESCRIPTION" />
+          <ScalarProperty Name="FILE_OF_LABWORK" ColumnName="FILE_OF_LABWORK" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="students">
+      <EntityTypeMapping TypeName="universitydbModel.student">
+        <MappingFragment StoreEntitySet="students">
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="SURNAME" ColumnName="SURNAME" />
+          <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+          <ScalarProperty Name="ID_IN_GROUP" ColumnName="ID_IN_GROUP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="teachers">
+      <EntityTypeMapping TypeName="universitydbModel.teacher">
+        <MappingFragment StoreEntitySet="teachers">
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="SURNAME" ColumnName="SURNAME" />
+          <ScalarProperty Name="POSITION" ColumnName="POSITION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="universitydbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="group">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FOUNDING_DATE" Type="DateTime" />
+    <Property Name="DEPARTMENT" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="GROUP_TYPE" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="students" Relationship="Self.FK_students_groups" FromRole="groups" ToRole="students" />
+  </EntityType>
+  <EntityType Name="marktype">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="studentacademicperformances" Relationship="Self.FK_studentvacademicperformance_marktypes" FromRole="marktypes" ToRole="studentacademicperformance" />
+  </EntityType>
+  <EntityType Name="schedule">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SUBJECT_ID" Type="Int32" Nullable="false" />
+    <Property Name="TEACHER_ID" Type="Int32" Nullable="false" />
+    <Property Name="GROUPS" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CLASSROOM" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATE" Type="DateTime" Nullable="false" />
+    <Property Name="SUBJECT_TYPE" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="THEME_OF_LESSON" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="CONDUCTED" Type="Int32" />
+    <Property Name="FILES_FOR_LESSON" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="subject" Relationship="Self.FK_schedule_subjects" FromRole="schedule" ToRole="subjects" />
+  </EntityType>
+  <EntityType Name="subject">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="schedules" Relationship="Self.FK_schedule_subjects" FromRole="subjects" ToRole="schedule" />
+    <NavigationProperty Name="studentacademicperformances" Relationship="Self.FK__subjects" FromRole="subjects" ToRole="studentacademicperformance" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PASSWORD" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="USER_TYPE" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="students" Relationship="Self.FK_students_users" FromRole="users" ToRole="students" />
+    <NavigationProperty Name="teachers" Relationship="Self.FK_teachers_users" FromRole="users" ToRole="teachers" />
+  </EntityType>
+  <EntityType Name="studentacademicperformance">
+    <Key>
+      <PropertyRef Name="STUDENT_ID" />
+      <PropertyRef Name="SUBJECT_ID" />
+      <PropertyRef Name="DATE" />
+    </Key>
+    <Property Name="STUDENT_ID" Type="Int32" Nullable="false" />
+    <Property Name="SUBJECT_ID" Type="Int32" Nullable="false" />
+    <Property Name="DATE" Type="DateTime" Nullable="false" />
+    <Property Name="PRESENCE" Type="Int32" />
+    <Property Name="MARK" Type="Int64" />
+    <Property Name="MARK_TYPE" Type="Int32" />
+    <Property Name="MARK_DESCRIPTION" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="FILE_OF_LABWORK" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="marktype" Relationship="Self.FK_studentvacademicperformance_marktypes" FromRole="studentacademicperformance" ToRole="marktypes" />
+    <NavigationProperty Name="subject" Relationship="Self.FK__subjects" FromRole="studentacademicperformance" ToRole="subjects" />
+  </EntityType>
+  <EntityType Name="student">
+    <Key>
+      <PropertyRef Name="USER_ID" />
+      <PropertyRef Name="NAME" />
+      <PropertyRef Name="SURNAME" />
+      <PropertyRef Name="GROUP_ID" />
+      <PropertyRef Name="ID_IN_GROUP" />
+    </Key>
+    <Property Name="USER_ID" Type="Int32" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SURNAME" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="GROUP_ID" Type="Int32" Nullable="false" />
+    <Property Name="ID_IN_GROUP" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="group" Relationship="Self.FK_students_groups" FromRole="students" ToRole="groups" />
+    <NavigationProperty Name="user" Relationship="Self.FK_students_users" FromRole="students" ToRole="users" />
+  </EntityType>
+  <EntityType Name="teacher">
+    <Key>
+      <PropertyRef Name="USER_ID" />
+      <PropertyRef Name="NAME" />
+      <PropertyRef Name="SURNAME" />
+      <PropertyRef Name="POSITION" />
+    </Key>
+    <Property Name="USER_ID" Type="Int32" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SURNAME" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="POSITION" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="user" Relationship="Self.FK_teachers_users" FromRole="teachers" ToRole="users" />
+  </EntityType>
+  <Association Name="FK_students_groups">
+    <End Role="groups" Type="Self.group" Multiplicity="1" />
+    <End Role="students" Type="Self.student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="groups">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="students">
+        <PropertyRef Name="GROUP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_studentvacademicperformance_marktypes">
+    <End Role="marktypes" Type="Self.marktype" Multiplicity="0..1" />
+    <End Role="studentacademicperformance" Type="Self.studentacademicperformance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="marktypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="studentacademicperformance">
+        <PropertyRef Name="MARK_TYPE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_schedule_subjects">
+    <End Role="subjects" Type="Self.subject" Multiplicity="1" />
+    <End Role="schedule" Type="Self.schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="subjects">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="schedule">
+        <PropertyRef Name="SUBJECT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__subjects">
+    <End Role="subjects" Type="Self.subject" Multiplicity="1" />
+    <End Role="studentacademicperformance" Type="Self.studentacademicperformance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="subjects">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="studentacademicperformance">
+        <PropertyRef Name="SUBJECT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_students_users">
+    <End Role="users" Type="Self.user" Multiplicity="1" />
+    <End Role="students" Type="Self.student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="students">
+        <PropertyRef Name="USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_teachers_users">
+    <End Role="users" Type="Self.user" Multiplicity="1" />
+    <End Role="teachers" Type="Self.teacher" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="teachers">
+        <PropertyRef Name="USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="universitydbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="groups" EntityType="Self.group" />
+    <EntitySet Name="marktypes" EntityType="Self.marktype" />
+    <EntitySet Name="schedules" EntityType="Self.schedule" />
+    <EntitySet Name="subjects" EntityType="Self.subject" />
+    <EntitySet Name="users" EntityType="Self.user" />
+    <EntitySet Name="studentacademicperformances" EntityType="Self.studentacademicperformance" />
+    <EntitySet Name="students" EntityType="Self.student" />
+    <EntitySet Name="teachers" EntityType="Self.teacher" />
+    <AssociationSet Name="FK_students_groups" Association="Self.FK_students_groups">
+      <End Role="groups" EntitySet="groups" />
+      <End Role="students" EntitySet="students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_studentvacademicperformance_marktypes" Association="Self.FK_studentvacademicperformance_marktypes">
+      <End Role="marktypes" EntitySet="marktypes" />
+      <End Role="studentacademicperformance" EntitySet="studentacademicperformances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_schedule_subjects" Association="Self.FK_schedule_subjects">
+      <End Role="subjects" EntitySet="subjects" />
+      <End Role="schedule" EntitySet="schedules" />
+    </AssociationSet>
+    <AssociationSet Name="FK__subjects" Association="Self.FK__subjects">
+      <End Role="subjects" EntitySet="subjects" />
+      <End Role="studentacademicperformance" EntitySet="studentacademicperformances" />
+    </AssociationSet>
+    <AssociationSet Name="FK_students_users" Association="Self.FK_students_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="students" EntitySet="students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_teachers_users" Association="Self.FK_teachers_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="teachers" EntitySet="teachers" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

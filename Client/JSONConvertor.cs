@@ -19,20 +19,16 @@ namespace Client
     {
         private List<DataTable> tables;
 
-        public JSONConvertor()
-        {
-            tables = new List<DataTable>();
-        }
-
         public void ConvertStringToDataTable(string jsonMessage)
         {
+            tables = new List<DataTable>();
             string[] arrayOfTables = jsonMessage.Split('/');
 
             for (int i = 0; i < arrayOfTables.Count(); i++)
             {
                 tables.Add(JsonConvert.DeserializeObject<DataTable>(arrayOfTables[i]));
             }
-            ShowTable();            // Only for console testing
+          // ShowTable();            // Only for console testing
         }
 
         public string ConvertJSONStringToString(string jsonMessage)

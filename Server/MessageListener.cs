@@ -19,7 +19,9 @@ namespace Server
     {
         private List<DataTable> tablesToSend;
         static string toSendObject;
-        private MySqlDao mySqlDao;
+        private MySqlConnection sqlConnection;
+        private CommandRecognizer commandRecognizer;
+        private ServerStatus serverStatus;
 
         public void StartServer()
         {
@@ -61,8 +63,7 @@ namespace Server
                 ";database=" + dbName +
                 ";port=" + port +
                 ";password=" + password + ";";
-            MySqlConnection sqlConnection = new MySqlConnection(connection);
-            mySqlDao = new MySqlDao(sqlConnection);
+            sqlConnection = new MySqlConnection(connection);
         }
 
         private void SelectDataProcessors(out List<DataProcessor> dataProcessors, out Dictionary<string, string> dataProcessorOptions)
@@ -81,36 +82,72 @@ namespace Server
         private void ReadIncommingCommand(PacketHeader header, Connection connection, string message)
         {
             Console.WriteLine("\nA message was received from " + connection.ToString() + " which said '" + message + "'.");
+            GenerateDataFromRequest(message);
+            GetTablesToSend();
+            GetCommandStatus();
             CreateSendObject(message);
             connection.SendObject("Message", toSendObject);
         }
 
-        private void CreateSendObject(string message)
+        private void GenerateDataFromRequest(string message)
+        {
+            commandRecognizer = new CommandRecognizer(sqlConnection);
+            commandRecognizer.GenerateDataFromRequest(message.Split(';'));
+        }
+
+        private void GetTablesToSend()
         {
             tablesToSend = new List<DataTable>();
-            string[] request = message.Split(';');
-            mySqlDao.CreateQuerry(request);
-            tablesToSend.AddRange(mySqlDao.GetData());
-            switch (mySqlDao.GetCommand())
+            tablesToSend.AddRange(commandRecognizer.GetTables());
+        }
+
+        private void GetCommandStatus()
+        {
+            serverStatus = commandRecognizer.GetCommand();
+        }
+
+        private void CreateSendObject(string message)
+        {
+            switch (serverStatus)
             {
-                case CommandList.EMPTY_RESULT:
+                case ServerStatus.EMPTY_RESULT:
                     {
                         toSendObject = "Empty result!";
                         break;
                     }
-                case CommandList.WRONG_COMMAND:
+                case ServerStatus.WRONG_COMMAND:
                     {
                         toSendObject = "Wrong command";
                         break;
                     }
-                case CommandList.INSERT_PRESENCE:
+                case ServerStatus.LOGIN_FAILED:
+                    {
+                        toSendObject = "Wrong login or password";
+                        break;
+                    }
+                case ServerStatus.DB_ERROR_IN_DATA:
+                    {
+                        toSendObject = "Error id data was found";
+                        break;
+                    }
+                case ServerStatus.INSERT_PRESENCE_SUCCESFULL:
                     {
                         toSendObject = "Presence was updated";
                         break;
                     }
-                case CommandList.INSERT_MARK:
+                case ServerStatus.INSERT_PRESENCE_FAILED:
+                    {
+                        toSendObject = "Presence wasn't updated coz of fail";
+                        break;
+                    }
+                case ServerStatus.INSERT_MARK_SUCCESFULL:
                     {
                         toSendObject = "Mark was updated";
+                        break;
+                    }
+                case ServerStatus.INSERT_MARK_FAILED:
+                    {
+                        toSendObject = "Mark was't updated coz of fail";
                         break;
                     }
                 default:
@@ -151,7 +188,7 @@ namespace Server
 
         public void CloseServer()
         {
-            mySqlDao.CloseConnection();
+            sqlConnection.Close();
             NetworkComms.Shutdown();
         }
 

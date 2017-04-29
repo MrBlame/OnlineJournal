@@ -44,19 +44,19 @@ namespace Client
             Console.WriteLine("\nA message was received from " + connection.ToString() + " which said '" + message + "'.");
 
             Console.WriteLine("After convert");
-            try
-            {
-                convertor.ConvertStringToDataTable(message);
-            }
-            catch (IndexOutOfRangeException)
-            {
-               Console.WriteLine("next error was occured: "+ convertor.ConvertJSONStringToString(message));
-            }
-            catch (Newtonsoft.Json.JsonReaderException)
-            {
-                Console.WriteLine("next error was occured: " + convertor.ConvertJSONStringToString(message));
-            }
-
+            //try
+            //{
+            //    convertor.ConvertStringToDataTable(message);
+            //}
+            //catch (IndexOutOfRangeException)
+            //{
+            //   Console.WriteLine("next error was occured: "+ convertor.ConvertJSONStringToString(message));
+            //}
+            //catch (Newtonsoft.Json.JsonReaderException)
+            //{
+            //    Console.WriteLine("next error was occured: " + convertor.ConvertJSONStringToString(message));
+            //}
+            convertor.ConvertStringToDataTable(message);
         }
 
     }
